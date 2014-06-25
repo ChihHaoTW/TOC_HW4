@@ -4,6 +4,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.*;
+import java.lang.Math.*;
 
 public class TocHW4
 {
@@ -14,7 +15,7 @@ public class TocHW4
         //connection.setDoInput(true);
         //InputStream inStream = connection.getInputStream();
         
-		BufferedReader in = new BufferedReader(new FileReader("538447a07122e8a77dfe2d86"));
+		BufferedReader in = new BufferedReader(new FileReader("5385b69de7259bb37d925971"));
         
 		//BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
         String s;  
@@ -34,13 +35,13 @@ public class TocHW4
     {
         JSONArray ary = new JSONArray(read(args[0]));
 		
-		int longth = 0;
+		int idx = -1;
+		String temp;
 		String address = "";
 		String road = "";
 
 		ArrayList<String> add_buf = new ArrayList<String>();
-        ArrayList<Integer> start_buf = new ArrayList<Integer>();
-		ArrayList<Integer> end_buf = new ArrayList<Integer>();
+        ArrayList<String> month = new ArrayList<String>();
 
 		for(int i = 0; i < ary.length(); i++)
         {
@@ -49,28 +50,74 @@ public class TocHW4
 			if(address.indexOf("路") != -1)
 			{
 				road = address.substring(0, address.indexOf("路") + 1);
-				System.out.println(road);
+				//System.out.println(road);
 			}
 			else if(address.indexOf("街") != -1)
 			{
-				
+				road = address.substring(0, address.indexOf("街") + 1);
+			}
+			else if(address.indexOf("大道") != -1)
+			{
+				road = address.substring(0, address.indexOf("大道") + 1);
 			}
 			else if(address.indexOf("巷") != -1)
 			{
-
+				road = address.substring(0, address.indexOf("巷") + 1);
 			}
+			else
+				continue;
 			
+			if(!add_buf.contains(road))
+			{
+				add_buf.add(road);
+				
+				temp = Integer.toString(ary.getJSONObject(i).getInt("交易年月"));
+				
+				if(temp.length() < 5) temp = temp + "0";
 
-			/*try
-            {
-                sum += ary.getJSONObject(i).getInt("總價元");
-            }
-            catch(org.json.JSONException e4)
-            {
-                System.out.println("總價元 error");
-                length--;
-            }*/
+				month.add(temp + "!");
+			}
+			else
+			{
+				idx = add_buf.indexOf(road);
+				temp = Integer.toString(ary.getJSONObject(i).getInt("交易年月"));
+				
+				if(temp.length() < 5) temp = temp + "0";
 
-        }
+				if(month.get(idx).indexOf(temp) == -1)
+					month.set(idx, month.get(idx) + temp + "!");
+			}
+		}
+
+		int longth = -1, i;
+
+		for(i = 0; i < add_buf.size(); i++)
+		{
+			if(month.get(i).length() > longth)
+				longth = month.get(i).length();
+		}
+
+		for(i = 0; i < add_buf.size(); i++)
+		{
+			if(month.get(i).length() == longth)
+				System.out.println(add_buf.get(i));
+			//System.out.println(add_buf.get(i) + " !! " + month.get(i));
+		}
+			
+		/*int longth = -1, i;
+			
+		for(i = 0; i < start_buf.size(); i++)
+		{
+			if((int)Math.floor(end_buf.get(i) / 100) * 12 + end_buf.get(i) % 100 - (int)Math.floor(start_buf.get(i) / 100) * 12 - start_buf.get(i) % 100 > longth)
+				longth = (int)Math.floor(end_buf.get(i) / 100) * 12 + end_buf.get(i) % 100 - (int)Math.floor(start_buf.get(i) / 100) * 12 - start_buf.get(i) % 100;
+		}
+
+		for(i = 0; i < start_buf.size(); i++)
+		{
+			if((int)Math.floor(end_buf.get(i) / 100) * 12 + end_buf.get(i) % 100 - (int)Math.floor(start_buf.get(i) / 100) * 12 - start_buf.get(i) % 100 == longth)
+				System.out.println(add_buf.get(i));
+			//System.out.println(add_buf.get(i) + " !! " + start_buf.get(i) + " !! " + end_buf.get(i));
+		}*/
+
     }
 }
