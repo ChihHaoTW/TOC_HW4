@@ -8,12 +8,14 @@ public class TocHW4
 {
     public static String read(String urlStr) throws IOException 
     {  
-        URL url = new URL(urlStr);
-        URLConnection connection = url.openConnection();
-        connection.setDoInput(true);
-        InputStream inStream = connection.getInputStream();
+        //URL url = new URL(urlStr);
+        //URLConnection connection = url.openConnection();
+        //connection.setDoInput(true);
+        //InputStream inStream = connection.getInputStream();
         
-        BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
+	BufferedReader in = new BufferedReader(new FileReader("538447a07122e8a77dfe2d86"));
+        
+	//BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
         String s;  
         StringBuilder sb = new StringBuilder();  
 
