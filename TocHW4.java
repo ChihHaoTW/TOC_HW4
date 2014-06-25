@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.*;
 
 public class TocHW4
 {
@@ -13,9 +14,9 @@ public class TocHW4
         //connection.setDoInput(true);
         //InputStream inStream = connection.getInputStream();
         
-	BufferedReader in = new BufferedReader(new FileReader("538447a07122e8a77dfe2d86"));
+		BufferedReader in = new BufferedReader(new FileReader("538447a07122e8a77dfe2d86"));
         
-	//BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
+		//BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
         String s;  
         StringBuilder sb = new StringBuilder();  
 
@@ -32,47 +33,35 @@ public class TocHW4
     public static void main(String args[]) throws IOException
     {
         JSONArray ary = new JSONArray(read(args[0]));
+		
+		int longth = 0;
+		String address = "";
+		String road = "";
 
-        long sum = 0;
-        int length = 0;
-        for(int i = 0; i < ary.length(); i++)
+		ArrayList<String> add_buf = new ArrayList<String>();
+        ArrayList<Integer> start_buf = new ArrayList<Integer>();
+		ArrayList<Integer> end_buf = new ArrayList<Integer>();
+
+		for(int i = 0; i < ary.length(); i++)
         {
-            try
-            {
-                if (!ary.getJSONObject(i).getString("鄉鎮市區").equals(args[1])) 
-                    continue;
-                //System.out.println(ary.getJSONObject(i).getString("鄉鎮市區"));
-            }
-            catch(org.json.JSONException e1)
-            {
-                //System.out.println("鄉鎮市區 error");
-                continue;
-            }
+			address = ary.getJSONObject(i).getString("土地區段位置或建物區門牌"); 
 
-            try
-            {
-                if (ary.getJSONObject(i).getString("土地區段位置或建物區門牌").indexOf(args[2]) == -1) 
-                    continue;
-            }
-            catch(org.json.JSONException e2)
-            {
-                //System.out.println("土地區段位置或建物區門牌 error");
-                continue;
-            }
+			if(address.indexOf("路") != -1)
+			{
+				road = address.substring(0, address.indexOf("路") + 1);
+				System.out.println(road);
+			}
+			else if(address.indexOf("街") != -1)
+			{
+				
+			}
+			else if(address.indexOf("巷") != -1)
+			{
 
-            try
-            {
-                if (ary.getJSONObject(i).getInt("交易年月") < (Integer.parseInt(args[3])*100)) 
-                    continue;
-            }
-            catch(org.json.JSONException e3)
-            {
-                //System.out.println("交易年月 error");
-                continue;
-            }
+			}
+			
 
-
-            try
+			/*try
             {
                 sum += ary.getJSONObject(i).getInt("總價元");
             }
@@ -80,13 +69,8 @@ public class TocHW4
             {
                 System.out.println("總價元 error");
                 length--;
-            }
+            }*/
 
-            length++;
         }
-        if (length == 0) 
-            System.out.println("No result!");
-        else
-            System.out.println(sum / length);
     }
 }
