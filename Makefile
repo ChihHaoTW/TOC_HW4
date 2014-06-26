@@ -3,15 +3,16 @@ JFLAGS = -cp $(LIB_FILE)
 JC = javac
 JVM= java
 JAR= jar cvfm
+SCHNUM = F74006357
 MF_FILE= manifest.mf
 FILE=
 .SUFFIXES: .java .class
 .java.class:
 	$(JC) $(JFLAGS) $*.java -encoding UTF-8
 CLASSES = \
-	TocHW4.java
+	TocHw4.java
 
-MAIN = TocHW4
+MAIN = TocHw4
 
 default: classes
 
@@ -22,6 +23,9 @@ run: classes
 
 jar: classes
 	$(JAR) $(MAIN).jar $(MF_FILE) *.class
+
+build:
+	ant -buildfile /home/TOC/ANT/toc4/build.xml build -Darg $(SCHNUM)
 
 clean:
 	$(RM) *.class
